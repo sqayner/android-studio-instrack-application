@@ -3,12 +3,16 @@ package dev.sqayner.instrack.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.instagram4j.instagram4j.models.user.Profile;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Locale;
@@ -29,8 +33,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static List<Profile> followers, followings;
     private LinearLayout ll1, ll2, ll3;
-    private int increase = 0;
     private LoadingDialog loadingDialog;
+    private ImageButton refreshIb;
+    private int increase;
+
+    private TextView displayNameTv, usernameTv;
+    private ImageView ivPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +46,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Locale.setDefault(Locale.US);
 
+        refreshIb = findViewById(R.id.main_ib_refresh);
+
         loadingDialog = new LoadingDialog(this);
-        loadingDialog.show();
 
         ll1 = findViewById(R.id.main_ll_ll1);
         ll2 = findViewById(R.id.main_ll_ll2);
@@ -66,6 +75,35 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, ProfileListActivity.class));
             }
         });
+
+        load();
+
+        displayNameTv = findViewById(R.id.main_user_tv_displayname);
+        usernameTv = findViewById(R.id.main_user_tv_username);
+        ivPhoto = findViewById(R.id.main_user_iv_photo);
+        final Profile selfProfile = App.client.getSelfProfile();
+        usernameTv.setText(selfProfile.getUsername());
+        if (selfProfile.getFull_name().equals(""))
+            displayNameTv.setVisibility(View.GONE);
+        else
+            displayNameTv.setText(selfProfile.getFull_name());
+        Picasso.get().load(selfProfile.getProfile_pic_url()).into(ivPhoto);
+
+        refreshIb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                load();
+            }
+        });
+    }
+
+    private void load() {
+        if (followers != null && !followers.isEmpty())
+            followings.clear();
+        if (followers != null && !followers.isEmpty())
+            followers.clear();
+        loadingDialog.show();
+        increase = 0;
 
         getFollowers().subscribe(new Observer<List<Profile>>() {
             @Override

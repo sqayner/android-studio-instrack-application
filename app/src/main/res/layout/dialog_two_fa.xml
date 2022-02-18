@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:paddingHorizontal="16dp"
-            android:text="2 Faktörlü Doğrulama"
+            android:text="@string/two_fa_tv_verify_code_text"
             android:textColor="@color/black"
             android:textSize="30sp" />
 
@@ -25,13 +25,15 @@
             android:id="@+id/two_fa_otp_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"
-            app:OtpItemWidth="30dp"
-            android:itemBackground="@color/transparent"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="8dp"
+            android:cursorVisible="false"
+            android:inputType="number"
+            android:itemBackground="@color/transparent"
             android:textColor="@color/black"
+            android:textSelectHandle="@android:color/transparent"
             app:OtpItemCount="6"
+            app:OtpItemWidth="30dp"
             app:OtpLineColor="@color/black"
             app:OtpViewType="line" />
 
@@ -39,11 +41,11 @@
             android:id="@+id/two_fa_btn_verify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="32dp"
             android:background="@drawable/button"
             android:gravity="center"
             android:stateListAnimator="@null"
-            android:text="Onayla"
+            android:text="@string/two_fa_btn_verify_text"
             android:textColor="@color/white"
             android:textSize="16sp"
             app:backgroundTint="@null" />

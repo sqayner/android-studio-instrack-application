@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.mukesh.OnOtpCompletionListener;
 import com.mukesh.OtpView;
 
 import dev.sqayner.instrack.R;

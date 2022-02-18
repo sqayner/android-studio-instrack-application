@@ -59,7 +59,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/two_fa_btn_verify"
+            android:id="@+id/user_btn_action"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -71,7 +71,7 @@
             android:minHeight="0dp"
             android:padding="0dp"
             android:stateListAnimator="@null"
-            android:text="Takipten Çık"
+            android:text="@string/item_user_unfollow_btn_text"
             android:textColor="@color/white"
             android:textSize="10sp"
             app:backgroundTint="@null" />

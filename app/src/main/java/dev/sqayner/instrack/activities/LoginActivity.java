@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.instagram4j.instagram4j.IGClient;
 import com.github.instagram4j.instagram4j.utils.IGChallengeUtils;
 
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
@@ -28,7 +29,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private EditText usernameEt, passwordEt, twoFAuth;
+    private EditText usernameEt, passwordEt;
     private Button loginBtn;
     private LoadingDialog loadingDialog;
 
@@ -36,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        Locale.setDefault(Locale.US);
 
         usernameEt = findViewById(R.id.login_username_et);
         passwordEt = findViewById(R.id.login_password_et);
