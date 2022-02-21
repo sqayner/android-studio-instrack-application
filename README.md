@@ -7,7 +7,7 @@
 </div>
 
 ## LIBRARY
-> [instagram4j](https://github.com/instagram4j/instagram4j).
+> [instagram4j/instagram4j](https://github.com/instagram4j/instagram4j)
 
 ## LICENSE
 
