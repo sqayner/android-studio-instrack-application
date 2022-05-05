@@ -23,6 +23,7 @@
 
         <com.mukesh.OtpView
             android:id="@+id/two_fa_otp_code"
+            style="@style/OtpWidget.OtpView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"

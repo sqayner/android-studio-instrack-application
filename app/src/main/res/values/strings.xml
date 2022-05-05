@@ -12,5 +12,5 @@
     <string name="item_user_cancel_btn_text">İsteği İptal Et</string>
     <string name="two_fa_btn_verify_text">Onayla</string>
     <string name="two_fa_tv_verify_code_text">Doğrulama Kodu</string>
-    <string name="author_description">Şevket Eren KAYNAR tarafından oluşturuldu\nİletişim: mail@erenkaynar.com.tr</string>
+    <string name="author_description">Şevket Eren KAYNAR tarafından oluşturuldu\nİletişim: sqayner@gmail.com</string>
 </resources>

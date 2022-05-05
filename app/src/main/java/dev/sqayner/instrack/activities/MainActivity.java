@@ -7,6 +7,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(@NonNull Throwable e) {
-
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(@NonNull Throwable e) {
-
+                Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                         return App.client
                                 .actions()
                                 .users()
-                                .findByUsername(App.username)
+                                .findByUsername(App.client.getSelfProfile().getUsername())
                                 .thenApply(userAction -> userAction.followersFeed().stream().flatMap(feedUsersResponse -> feedUsersResponse.getUsers().stream()).collect(Collectors.toList()))
                                 .get();
                     }
@@ -182,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
                         return App.client
                                 .actions()
                                 .users()
-                                .findByUsername(App.username)
+                                .findByUsername(App.client.getSelfProfile().getUsername())
                                 .thenApply(userAction -> userAction.followingFeed().stream().flatMap(feedUsersResponse -> feedUsersResponse.getUsers().stream()).collect(Collectors.toList()))
                                 .get();
                     }

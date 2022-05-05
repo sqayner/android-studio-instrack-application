@@ -21,6 +21,7 @@ public class TwoFADialog extends Dialog {
     private TwoFactoryAuthenticationListener twoFactoryAuthenticationListener;
     private Button BtnVerify;
     private OtpView OTP2FaCode;
+    private String code;
 
     public TwoFADialog(@NonNull Context context) {
         super(context);
@@ -28,6 +29,14 @@ public class TwoFADialog extends Dialog {
 
     public void setTwoFactoryAuthenticationListener(TwoFactoryAuthenticationListener twoFactoryAuthenticationListener) {
         this.twoFactoryAuthenticationListener = twoFactoryAuthenticationListener;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     @Override
@@ -57,6 +66,7 @@ public class TwoFADialog extends Dialog {
             @Override
             public void onClick(View v) {
                 if (OTP2FaCode.getText() != null) {
+                    setCode(OTP2FaCode.getText().toString());
                     if (twoFactoryAuthenticationListener != null)
                         twoFactoryAuthenticationListener.onAuth(OTP2FaCode.getText().toString());
                 } else
@@ -64,6 +74,12 @@ public class TwoFADialog extends Dialog {
                 dismiss();
             }
         });
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        OTP2FaCode.setText("");
     }
 
     public interface TwoFactoryAuthenticationListener {

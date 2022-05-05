@@ -9,8 +9,6 @@ import java.util.Locale;
 public class App extends Application {
 
     public static IGClient client;
-    public static String username;
-    public static String password;
 
     @Override
     public void onCreate() {

@@ -11,10 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.instagram4j.instagram4j.IGClient;
+import com.github.instagram4j.instagram4j.exceptions.ExceptionallyHandler;
+import com.github.instagram4j.instagram4j.responses.accounts.LoginResponse;
 import com.github.instagram4j.instagram4j.utils.IGChallengeUtils;
 
+import java.io.File;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import dev.sqayner.instrack.App;
@@ -27,11 +29,12 @@ import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements Callable<String> {
 
     private EditText usernameEt, passwordEt;
     private Button loginBtn;
     private LoadingDialog loadingDialog;
+    private TwoFADialog twoFADialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +47,42 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.login_btn);
 
         loadingDialog = new LoadingDialog(this);
+        twoFADialog = new TwoFADialog(LoginActivity.this);
+
+        loginSavedAccount().subscribe(new Observer<IGClient>() {
+            @Override
+            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@io.reactivex.rxjava3.annotations.NonNull IGClient igClient) {
+                if (igClient.isLoggedIn()) {
+                    App.client = igClient;
+                    goMainActivity();
+                } else {
+                    Toast.makeText(LoginActivity.this, "giriş başarısız", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                e.printStackTrace();
+                //Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadingDialog.show();
 
-                App.username = usernameEt.getText().toString();
-                App.password = passwordEt.getText().toString();
-
-                login(App.username, App.password).subscribe(new Observer<IGClient>() {
+                login(usernameEt.getText().toString(), passwordEt.getText().toString()).subscribe(new Observer<IGClient>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
 
@@ -61,56 +90,35 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(@NonNull IGClient igClient) {
-                        App.client = igClient;
+                        if (igClient.isLoggedIn()) {
+                            try {
+                                File clientFile = new File(getFilesDir(), "client");
+                                File cookieFile = new File(getFilesDir(), "cookie");
+                                igClient.serialize(clientFile, cookieFile);
+                                igClient.setExceptionallyHandler(new ExceptionallyHandler() {
+                                    @Override
+                                    public <T> T handle(Throwable throwable, Class<T> type) {
+                                        Toast.makeText(LoginActivity.this, throwable.getMessage(), Toast.LENGTH_SHORT).show();
+                                        return null;
+                                    }
+                                });
+                            } catch (Exception e) {
+                                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+
+                            App.client = igClient;
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            finish();
+                        } else {
+                            Toast.makeText(LoginActivity.this, "Giriş Başarısız", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        if (Objects.requireNonNull(e.getMessage()).trim().equals(""))
-                            displayTwoFactorAuthCodeInputDialog();
-                        else
-                            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-
-                        loadingDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        loadingDialog.dismiss();
-                        goMainActivity();
-                    }
-                });
-            }
-        });
-    }
-
-    private void displayTwoFactorAuthCodeInputDialog() {
-        loadingDialog.dismiss();
-        TwoFADialog twoFADialog = new TwoFADialog(LoginActivity.this);
-        twoFADialog.show();
-
-        twoFADialog.setTwoFactoryAuthenticationListener(new TwoFADialog.TwoFactoryAuthenticationListener() {
-            @Override
-            public void onAuth(String code) {
-                loadingDialog.show();
-                loginWithTwoFactorAuth(App.username, App.password, code).subscribe(new Observer<IGClient>() {
-                    @Override
-                    public void onSubscribe(@NonNull Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(@NonNull IGClient igClient) {
-                        App.client = igClient;
-                    }
-
-                    @Override
-                    public void onError(@NonNull Throwable e) {
-                        if (Objects.requireNonNull(e.getMessage()).trim().equals(""))
-                            Toast.makeText(LoginActivity.this, "Bilinmeyen bir hata oluştu.", Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        e.printStackTrace();
                         loadingDialog.dismiss();
                     }
 
@@ -137,6 +145,18 @@ public class LoginActivity extends AppCompatActivity {
                         return IGClient.builder()
                                 .username(username)
                                 .password(password)
+                                .onTwoFactor(new IGClient.Builder.LoginHandler() {
+                                    @Override
+                                    public LoginResponse accept(IGClient client, LoginResponse t) {
+                                        return IGChallengeUtils.resolveTwoFactor(client, t, LoginActivity.this);
+                                    }
+                                })
+                                .onChallenge(new IGClient.Builder.LoginHandler() {
+                                    @Override
+                                    public LoginResponse accept(IGClient client, LoginResponse t) {
+                                        return IGChallengeUtils.resolveChallenge(client, t, LoginActivity.this);
+                                    }
+                                })
                                 .login();
                     }
                 })
@@ -144,26 +164,41 @@ public class LoginActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    private Observable<IGClient> loginWithTwoFactorAuth(@NonNull String username, @NonNull String password, @NonNull String twoFA) {
+    private Observable<IGClient> loginSavedAccount() {
         return Observable
                 .fromCallable(new Callable<IGClient>() {
                     @Override
                     public IGClient call() throws Exception {
-                        return IGClient.builder()
-                                .username(username)
-                                .password(password)
-                                .onTwoFactor((client, response) -> {
-                                    return IGChallengeUtils.resolveTwoFactor(client, response, new Callable<String>() {
-                                        @Override
-                                        public String call() throws Exception {
-                                            return twoFA;
-                                        }
-                                    });
-                                })
-                                .login();
+                        IGClient deserializedClient = IGClient.deserialize(new File(getFilesDir(), "client"), new File(getFilesDir(), "cookie"));
+                        if (deserializedClient.isLoggedIn())
+                            return deserializedClient;
+                        else
+                            deserializedClient.sendLoginRequest();
+                        return deserializedClient;
                     }
                 })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public String call() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!twoFADialog.isShowing())
+                    twoFADialog.show();
+            }
+        });
+
+        String code = "";
+
+        do
+            if (twoFADialog.getCode() != null && !twoFADialog.getCode().equals("") && twoFADialog.getCode().length() == 6) {
+                code = twoFADialog.getCode();
+                twoFADialog.setCode("");
+            }
+        while (code.equals(""));
+        return code;
     }
 }

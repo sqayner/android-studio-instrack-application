@@ -63,6 +63,11 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
         return profiles.size();
     }
 
+    public void deleteProfile(Profile profile) {
+        profiles.removeIf(p -> profile.getUsername().equals(p.getUsername()));
+        profiles.remove(profile);
+    }
+
     public enum ActionButtonTypes {
         FOLLOW,
         UNFOLLOW,

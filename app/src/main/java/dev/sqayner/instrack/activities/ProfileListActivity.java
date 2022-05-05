@@ -113,8 +113,6 @@ public class ProfileListActivity extends AppCompatActivity {
         rvNotFollowingMeUsers.setLayoutManager(mLayoutManager);
         rvNotFollowingMeUsers.setAdapter(userRecyclerViewAdapter);
 
-        userRecyclerViewAdapter.notifyDataSetChanged();
-
         userRecyclerViewAdapter.setOnItemClickListener(new UserRecyclerViewAdapter.OnClickListener() {
             @Override
             public void onClick(Profile user, int position) {
@@ -190,8 +188,6 @@ public class ProfileListActivity extends AppCompatActivity {
     }
 
     private void updateTitle() {
-
-
         switch (TYPE) {
             case THOSE_WHO_DO_NOT_FOLLOW_ME:
                 TvTitle.setText(MessageFormat.format("Beni Takip Etmeyeneler ({0})", profiles.size()));
