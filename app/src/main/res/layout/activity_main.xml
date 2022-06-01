@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/main_title_app_name"
+            android:id="@+id/title"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fontFamily="@font/fontspring_demo_blue_vinyl_bold_ps_ot"
@@ -33,7 +33,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
-            android:id="@+id/main_ib_refresh"
+            android:id="@+id/logout_ib"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="16sp"
+            android:background="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_logout_24" />
+
+        <ImageButton
+            android:id="@+id/refresh_ib"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginEnd="16sp"
@@ -49,7 +60,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:overScrollMode="never"
-        app:layout_constraintBottom_toTopOf="@+id/main_author_sqayner"
+        app:layout_constraintBottom_toTopOf="@+id/author_sqayner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/main_cl_tb">
@@ -76,7 +87,7 @@
                     app:cardElevation="0dp">
 
                     <ImageView
-                        android:id="@+id/main_user_iv_photo"
+                        android:id="@+id/photo_iv"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         tools:srcCompat="@tools:sample/avatars" />
@@ -84,7 +95,7 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/main_user_tv_displayname"
+                android:id="@+id/display_name_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
@@ -93,7 +104,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/main_user_tv_username"
+                android:id="@+id/username_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
@@ -160,7 +171,7 @@
     </ScrollView>
 
     <TextView
-        android:id="@+id/main_author_sqayner"
+        android:id="@+id/author_sqayner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="monospace"

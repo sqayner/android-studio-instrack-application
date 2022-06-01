@@ -49,34 +49,6 @@ public class LoginActivity extends AppCompatActivity implements Callable<String>
         loadingDialog = new LoadingDialog(this);
         twoFADialog = new TwoFADialog(LoginActivity.this);
 
-        loginSavedAccount().subscribe(new Observer<IGClient>() {
-            @Override
-            public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(@io.reactivex.rxjava3.annotations.NonNull IGClient igClient) {
-                if (igClient.isLoggedIn()) {
-                    App.client = igClient;
-                    goMainActivity();
-                } else {
-                    Toast.makeText(LoginActivity.this, "giriş başarısız", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
-                e.printStackTrace();
-                //Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,23 +130,6 @@ public class LoginActivity extends AppCompatActivity implements Callable<String>
                                     }
                                 })
                                 .login();
-                    }
-                })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread());
-    }
-
-    private Observable<IGClient> loginSavedAccount() {
-        return Observable
-                .fromCallable(new Callable<IGClient>() {
-                    @Override
-                    public IGClient call() throws Exception {
-                        IGClient deserializedClient = IGClient.deserialize(new File(getFilesDir(), "client"), new File(getFilesDir(), "cookie"));
-                        if (deserializedClient.isLoggedIn())
-                            return deserializedClient;
-                        else
-                            deserializedClient.sendLoginRequest();
-                        return deserializedClient;
                     }
                 })
                 .subscribeOn(Schedulers.newThread())

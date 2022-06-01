@@ -30,7 +30,7 @@
         android:ems="10"
         android:hint="@string/login_et_username_text"
         android:inputType="textPersonName"
-        android:padding="8dp"
+        android:padding="16dp"
         android:textColor="@color/black"
         android:textCursorDrawable="@drawable/cursor" />
 
@@ -44,7 +44,7 @@
         android:ems="10"
         android:hint="@string/login_et_password_text"
         android:inputType="textPassword"
-        android:padding="8dp"
+        android:padding="16dp"
         android:textColor="@color/black" />
 
     <Button
@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:background="@drawable/button"
+        android:background="@drawable/button_follow_unfollow"
         android:gravity="center"
         android:stateListAnimator="@null"
         android:text="@string/login_btn_text"

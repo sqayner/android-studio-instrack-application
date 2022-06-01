@@ -4,7 +4,6 @@ import static dev.sqayner.instrack.activities.MainActivity.followers;
 import static dev.sqayner.instrack.activities.MainActivity.followings;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -80,7 +79,7 @@ public class ProfileListActivity extends AppCompatActivity {
                     }
                 }
 
-                TvTitle.setText(MessageFormat.format("Beni Takip Etmeyeneler ({0})", profiles.size()));
+                TvTitle.setText(MessageFormat.format("{0} ({1})", getResources().getString(R.string.main_ll3_text), profiles.size()));
                 break;
             case THE_ONES_I_DONT_FOLLOW:
                 userRecyclerViewAdapter.setActionButtonType(UserRecyclerViewAdapter.ActionButtonTypes.FOLLOW);
@@ -91,7 +90,7 @@ public class ProfileListActivity extends AppCompatActivity {
                     }
                 }
 
-                TvTitle.setText(MessageFormat.format("Geri Takip Etmediklerim ({0})", profiles.size()));
+                TvTitle.setText(MessageFormat.format("{0} ({1})", getResources().getString(R.string.main_ll2_text), profiles.size()));
                 break;
             case MUTUAL_FOLLOWING:
                 userRecyclerViewAdapter.setActionButtonType(UserRecyclerViewAdapter.ActionButtonTypes.UNFOLLOW);
@@ -102,7 +101,7 @@ public class ProfileListActivity extends AppCompatActivity {
                     }
                 }
 
-                TvTitle.setText(MessageFormat.format("Karşılıklı Takipleştiklerim ({0})", profiles.size()));
+                TvTitle.setText(MessageFormat.format("{0} ({1})", getResources().getString(R.string.main_ll1_text), profiles.size()));
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + TYPE);
@@ -116,7 +115,8 @@ public class ProfileListActivity extends AppCompatActivity {
         userRecyclerViewAdapter.setOnItemClickListener(new UserRecyclerViewAdapter.OnClickListener() {
             @Override
             public void onClick(Profile user, int position) {
-                Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse("http://www.instagram.com/" + user.getUsername()));
+                Intent intent = new Intent(ProfileListActivity.this, ProfileViewerActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });

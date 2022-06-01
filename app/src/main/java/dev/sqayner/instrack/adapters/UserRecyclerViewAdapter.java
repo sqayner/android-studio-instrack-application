@@ -108,34 +108,30 @@ public class UserRecyclerViewAdapter extends RecyclerView.Adapter<UserRecyclerVi
                 }
             });
 
-            if (actionButtonType == ActionButtonTypes.UNFOLLOW) {
+            if (actionButtonType == ActionButtonTypes.UNFOLLOW)
                 actionBtn.setText(R.string.item_user_unfollow_btn_text);
-                actionBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            else if (actionButtonType == ActionButtonTypes.FOLLOW)
+                actionBtn.setText(R.string.item_user_follow_btn_text);
+            else if (actionButtonType == ActionButtonTypes.CANCEL)
+                actionBtn.setText(R.string.item_user_follow_btn_text);
+
+            actionBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (actionButtonType == ActionButtonTypes.UNFOLLOW) {
                         if (onUnfollowButtonClickListener != null)
                             onUnfollowButtonClickListener.onClick(user, position);
-                    }
-                });
-            } else if (actionButtonType == ActionButtonTypes.FOLLOW) {
-                actionBtn.setText(R.string.item_user_follow_btn_text);
-                actionBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    } else if (actionButtonType == ActionButtonTypes.FOLLOW) {
+                        if (onFollowButtonClickListener != null)
+                            onFollowButtonClickListener.onClick(user, position);
+                    } else if (actionButtonType == ActionButtonTypes.CANCEL) {
                         if (onFollowButtonClickListener != null)
                             onFollowButtonClickListener.onClick(user, position);
                     }
-                });
-            } else if (actionButtonType == ActionButtonTypes.CANCEL) {
-                actionBtn.setText(R.string.item_user_follow_btn_text);
-                actionBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (onFollowButtonClickListener != null)
-                            onFollowButtonClickListener.onClick(user, position);
-                    }
-                });
-            }
+                }
+            });
+
+
         }
     }
 }
