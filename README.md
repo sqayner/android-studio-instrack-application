@@ -1,8 +1,8 @@
 # InsTrack Android Instagram Follower App
 <p align="center">
-    <img width="30%" src="https://github.com/sqayner/android-studio-instrack-application/blob/main/screenshots/Screenshot_20220218_232915.png">
-    <img width="30%" src="https://github.com/sqayner/android-studio-instrack-application/blob/main/screenshots/Screenshot_20220218_233324.png">
-    <img width="30%" src="https://github.com/sqayner/android-studio-instrack-application/blob/main/screenshots/Screenshot_20220218_233827.png">
+    <img width="30%" src="https://github.com/sqayner/android-studio-instrack-application/blob/main/screenshots/ss1.jpeg">
+    <img width="30%" src="https://github.com/sqayner/android-studio-instrack-application/blob/main/screenshots/ss2.jpeg">
+    <img width="30%" src="https://github.com/sqayner/android-studio-instrack-application/blob/main/screenshots/ss3.jpeg">
 </p>
 
 ## LIBRARY
