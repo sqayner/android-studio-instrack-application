@@ -22,7 +22,7 @@ import java.util.concurrent.Callable;
 import dev.sqayner.instrack.App;
 import dev.sqayner.instrack.R;
 import dev.sqayner.instrack.dialogs.LoadingDialog;
-import dev.sqayner.instrack.dialogs.TwoFADialog;
+import dev.sqayner.instrack.dialogs.CodeEntryDialog;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements Callable<String>
     private EditText usernameEt, passwordEt;
     private Button loginBtn;
     private LoadingDialog loadingDialog;
-    private TwoFADialog twoFADialog;
+    private CodeEntryDialog twoFADialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity implements Callable<String>
         loginBtn = findViewById(R.id.login_btn);
 
         loadingDialog = new LoadingDialog(this);
-        twoFADialog = new TwoFADialog(LoginActivity.this);
+        twoFADialog = new CodeEntryDialog(LoginActivity.this);
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override

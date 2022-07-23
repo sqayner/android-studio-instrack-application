@@ -26,6 +26,7 @@ import dev.sqayner.instrack.App;
 import dev.sqayner.instrack.R;
 import dev.sqayner.instrack.adapters.UserRecyclerViewAdapter;
 import dev.sqayner.instrack.dialogs.LoadingDialog;
+import dev.sqayner.instrack.dialogs.TextMessageDialog;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -42,6 +43,7 @@ public class ProfileListActivity extends AppCompatActivity {
     private LoadingDialog loadingDialog;
     private UserRecyclerViewAdapter userRecyclerViewAdapter;
     private List<Profile> profiles;
+    private TextMessageDialog textMessageDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +51,12 @@ public class ProfileListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_list);
 
         loadingDialog = new LoadingDialog(this);
+        textMessageDialog = new TextMessageDialog(this);
+
+        textMessageDialog.setTitle(getString(R.string.spam_alert_title));
+        textMessageDialog.setMessage(getString(R.string.spam_alert_message));
+
+        textMessageDialog.show();
 
         IbBack = findViewById(R.id.profile_list_ib_back);
         IbBack.setOnClickListener(new View.OnClickListener() {

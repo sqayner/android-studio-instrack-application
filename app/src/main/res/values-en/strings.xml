@@ -11,6 +11,9 @@
     <string name="item_user_follow_btn_text">Follow</string>
     <string name="item_user_cancel_btn_text">Cancel Request</string>
     <string name="two_fa_btn_verify_text">Verify</string>
+    <string name="dialog_btn_ok_text">OK</string>
     <string name="two_fa_tv_verify_code_text">Verify Code</string>
     <string name="author_description">Created by Şevket Eren KAYNAR\nContact: sqayner@gmail.com</string>
+    <string name="spam_alert_title">Spam Alert</string>
+    <string name="spam_alert_message">It is not recommended to unfollow or follow through the application, we recommend you to use Instagram\'s own interface to unfollow or follow.</string>
 </resources>

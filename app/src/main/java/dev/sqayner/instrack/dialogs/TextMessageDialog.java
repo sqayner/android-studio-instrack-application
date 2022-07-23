@@ -7,43 +7,46 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.mukesh.OtpView;
-
 import dev.sqayner.instrack.R;
+import dev.sqayner.instrack.databinding.DialogTextMessageBinding;
 
-public class TwoFADialog extends Dialog {
+public class TextMessageDialog extends Dialog {
 
-    private TwoFactoryAuthenticationListener twoFactoryAuthenticationListener;
-    private Button BtnVerify;
-    private OtpView OTP2FaCode;
-    private String code;
+    private CodeEntryDialog.TwoFactoryAuthenticationListener twoFactoryAuthenticationListener;
+    private DialogTextMessageBinding binding;
+    private String message, title;
 
-    public TwoFADialog(@NonNull Context context) {
+    public TextMessageDialog(@NonNull Context context) {
         super(context);
     }
 
-    public void setTwoFactoryAuthenticationListener(TwoFactoryAuthenticationListener twoFactoryAuthenticationListener) {
-        this.twoFactoryAuthenticationListener = twoFactoryAuthenticationListener;
+    public String getMessage() {
+        return message;
     }
 
-    public String getCode() {
-        return code;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.dialog_two_fa);
+        binding = DialogTextMessageBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         getWindow().setBackgroundDrawableResource(R.color.transparent);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -57,20 +60,9 @@ public class TwoFADialog extends Dialog {
 
         setCancelable(false);
 
-        BtnVerify = findViewById(R.id.two_fa_btn_verify);
-        OTP2FaCode = findViewById(R.id.two_fa_otp_code);
-
-        OTP2FaCode.requestFocus();
-
-        BtnVerify.setOnClickListener(new View.OnClickListener() {
+        binding.okBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (OTP2FaCode.getText() != null) {
-                    setCode(OTP2FaCode.getText().toString());
-                    if (twoFactoryAuthenticationListener != null)
-                        twoFactoryAuthenticationListener.onAuth(OTP2FaCode.getText().toString());
-                } else
-                    Toast.makeText(getContext(), "Lütfen kodunuzu giriniz.", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
@@ -79,7 +71,8 @@ public class TwoFADialog extends Dialog {
     @Override
     public void show() {
         super.show();
-        OTP2FaCode.setText("");
+        binding.messageTv.setText(getMessage());
+        binding.messageTitleTv.setText(getTitle());
     }
 
     public interface TwoFactoryAuthenticationListener {

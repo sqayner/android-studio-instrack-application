@@ -11,6 +11,9 @@
     <string name="item_user_follow_btn_text">Takip Et</string>
     <string name="item_user_cancel_btn_text">İsteği İptal Et</string>
     <string name="two_fa_btn_verify_text">Onayla</string>
+    <string name="dialog_btn_ok_text">Tamam</string>
     <string name="two_fa_tv_verify_code_text">Doğrulama Kodu</string>
     <string name="author_description">Şevket Eren KAYNAR tarafından oluşturuldu\nİletişim: sqayner@gmail.com</string>
+    <string name="spam_alert_title">Spam Uyarısı</string>
+    <string name="spam_alert_message">Uygulama üzerinden takipten çıkma veya takip etme işlemlerini yapmanız tavsiye edilmez, takipten çıkmak veya takip etmek için Instagram\'ın kendi arayüzünü kullanmanızı tavsiye ederiz.</string>
 </resources>
